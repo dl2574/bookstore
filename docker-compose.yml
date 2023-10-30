@@ -8,6 +8,9 @@ services:
       - .:/bookstore
     depends_on: 
       - db
+    environment:
+      - "DJANGO_SECRET_KEY=django-insecure-jy_#$$_%qg^+qcz%xvz^t!f^8#h_uo43de(g@f&ev&9mo(%cqe$$"
+      - "DJANGO_DEBUG=True"
   db:
     image: postgres
     volumes:
