@@ -59,7 +59,7 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = "accounts.CustomUser"
 
 MIDDLEWARE = [
-    "django.middleware.cache.UpdateCacheMiddleware", # For site caching
+    "django.middleware.cache.UpdateCacheMiddleware",  # For site caching
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -69,7 +69,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
-    "django.middleware.cache.FetchFromCacheMiddleware", # For site caching
+    "django.middleware.cache.FetchFromCacheMiddleware",  # For site caching
 ]
 
 ROOT_URLCONF = "django_project.urls"
@@ -174,7 +174,17 @@ DEFAULT_FROM_EMAIL = "admin@djangobookstore.com"
 hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
 INTERNAL_IPS = [ip[:-1] + "1" for ip in ips]
 
-#Cacheing Settings
+# Cacheing Settings
 CACHE_MIDDLEWARE_ALIAS = "default"
 CACHE_MIDDLEWARE_SECONDS = 604800
 CACHE_MIDDLEWARE_KEYPREFIX = ""
+
+# Security Settings
+SECURE_SSL_REDIRECT = env.bool("DJANGO_SECURE_SSL_REDIRECT", default=True)
+SECURE_HSTS_SECONDS = env.int("DJANGO_SECURE_HSTS_SECONDS", default=2592000)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool(
+    "DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS", default=True
+)
+SECURE_HSTS_PRELOAD = env.bool("DJANGO_SECURE_HSTS_PRELOAD", default=True)
+SESSION_COOKIE_SECURE = env.bool("DJANGO_SESSION_COOKIE_SECURE", default=True)
+CSRF_COOKIE_SECURE = env.bool("DJANGO_CSRF_COOKIE_SECURE", default=True)
