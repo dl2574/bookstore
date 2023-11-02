@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import socket
 from pathlib import Path
 from environs import Env
 
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     "allauth",
     "allauth.account",
+    "debug_toolbar",
     # Local
     "accounts.apps.AccountsConfig",
     "pages.apps.PagesConfig",
@@ -57,6 +59,7 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = "accounts.CustomUser"
 
 MIDDLEWARE = [
+    "django.middleware.cache.UpdateCacheMiddleware", # For site caching
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -65,6 +68,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "django.middleware.cache.FetchFromCacheMiddleware", # For site caching
 ]
 
 ROOT_URLCONF = "django_project.urls"
@@ -164,3 +169,12 @@ ACCOUNT_UNIQUE_EMAIL = True
 
 
 DEFAULT_FROM_EMAIL = "admin@djangobookstore.com"
+
+# django-debug-toolbar
+hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+INTERNAL_IPS = [ip[:-1] + "1" for ip in ips]
+
+#Cacheing Settings
+CACHE_MIDDLEWARE_ALIAS = "default"
+CACHE_MIDDLEWARE_SECONDS = 604800
+CACHE_MIDDLEWARE_KEYPREFIX = ""
